@@ -1,0 +1,29 @@
+buildscript {
+  repositories {
+    mavenCentral()
+    maven {
+      url  "https://dl.bintray.com/jetbrains/kotlin-native-dependencies"
+    }
+  }
+
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.1"
+  }
+}
+
+apply plugin: 'konan'
+
+konanInterop {
+  libsfml {
+    defFile 'sfml.def'
+    includeDirs '/usr/include', '/opt/local/include', '/usr/local/opt/include'
+  }
+}
+
+konanArtifacts {
+  HelloSfml {
+    inputFiles project.fileTree('src')
+    useInterop 'libsfml'
+    linkerOpts "-LCSFML-2.4-osx-clang/lib -lcsfml-graphics -lcsfml-audio -lcsfml-window -lcsfml-network -lcsfml-system"
+  }
+}
